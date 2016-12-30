@@ -20,7 +20,7 @@ void setup() {
   // Initialize serial communication
   Serial.begin(9600);
 
-  // Set digital inputs to high
+  // Set digital inputs to high for buttons
   pinMode(0, INPUT_PULLUP);
   pinMode(1, INPUT_PULLUP);
   pinMode(2, INPUT_PULLUP);
@@ -37,32 +37,9 @@ void loop(){
 
   delay(15);
   
-  //button_read();
-  
-  //bool done = 1;
-
-//  while(done){
-//
-//    if(button0 == 1){
-//      BeanMidi.sendMessage(CONTROLCHANGE, 18, y_smooth);
-//      done =0;
-//      break;
-//    }
-//
-//    if(button1 == 1){
-//      BeanMidi.sendMessage(CONTROLCHANGE, 19, x_smooth);
-//      done = 0;
-//      break;
-//    }
-
-   // else {
-      //BeanMidi.sendMessage(CONTROLCHANGE, 18, x_smooth);
-      //BeanMidi.sendMessage(CONTROLCHANGE, 19, y_smooth);
-    //}
- // }
 }
 
-
+// Reads binary button data.
 void button_read(){
   button0 = digitalRead(0);
   button1 = digitalRead(1);
@@ -70,18 +47,18 @@ void button_read(){
   //button3 = digitalRead(3);
 }
 
+// Reads flex sensor resistance, then adjusts the value and smooths
+// the readings. Then sends smoothed data through MIDI.
 void send_flex_midi(){
   flex0_raw = abs(analogRead(0) -725);
   flex0_smooth = smoothing(flex0_raw, arr_flex0);
   
   flex1_raw = abs(analogRead(1) -725);
   flex1_smooth = smoothing(flex1_raw, arr_flex1);
-
-  BeanMidi.enable();
-  BeanMidi.sendMessage(CONTROLCHANGE, 16, flex0_smooth);
-  BeanMidi.sendMessage(CONTROLCHANGE, 17, flex1_smooth);
 }
 
+// Reads accelerometer data and sent to a smoothing function,
+// then sends smoothed data through MIDI.
 void send_accel_midi(){
     AccelerationReading reading = Bean.getAcceleration(); 
     x_raw = abs((reading.xAxis + 511)) / 8;
@@ -92,14 +69,13 @@ void send_accel_midi(){
 
     z_raw = abs((reading.zAxis + 511)) / 8;
     z_smooth = smoothing(z_raw, arr_z);  
-
-    Bean.setLed(x_smooth, y_smooth, z_smooth);
-
-    //BeanMidi.enable();
-    //BeanMidi.sendMessage(CONTROLCHANGE, 18, x_smooth);
-    //BeanMidi.sendMessage(CONTROLCHANGE, 19, y_smooth);
 }
 
+// Smoothing Function for cleaner sensor readings
+// Sorts a specified amount of measurements, then filters out top 
+// and bottom outliers, and finally averages the rest of the data.
+
+// *** Bigger box means more lag, but smoother reading***
 int smoothing(int raw_in, int *axis_array){
   int j, k, temp, top, bottom;
   long total;
@@ -110,7 +86,7 @@ int smoothing(int raw_in, int *axis_array){
   i = (i + 1) % filter_size;    // increment counter and roll over if necc. -  % (modulo operator) rolls over variable
   axis_array[i] = raw_in; 
 
-  for (j=0; j<filter_size; j++){
+  for (j=0; j<filter_size; j++){   // 
     sorted[j] = axis_array[j];
   }
 
@@ -126,7 +102,8 @@ int smoothing(int raw_in, int *axis_array){
         done = 0;
   }
 
-// throw out top and bottom 15% of samples - limit to throw out at least one from top and bottom
+// throw out top and bottom 15% of samples 
+// limit to throw out at least one from top and bottom
   bottom = max(((filter_size * 15)  / 100), 1); 
   top = min((((filter_size * 85) / 100) + 1), (filter_size - 1));
   k = 0;
@@ -135,9 +112,8 @@ int smoothing(int raw_in, int *axis_array){
     total += sorted[j];  // total remaining indices
     k++; 
   }  
-
+// average 
   return total / k;
     }
   }
 }
-

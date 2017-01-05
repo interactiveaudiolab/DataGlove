@@ -1,4 +1,7 @@
 # Sound Gauntlet
+
+![Alt text]( https://cloud.githubusercontent.com/assets/17751787/21694473/24d0cdae-d34b-11e6-8099-01050c640021.JPG "Prototype")
+
 A hardware/software project using a Bean+ and Arduino to build a glove for control of electronic music. The device integrates flex sensors 
 and spacial positioning allowing the user to manipulate multiple audio parameters. Using a wireless bluetooth connection, the Bean+
 microcontroller sends MIDI data to be interpreted by a Digital Audio Workstation (DAW). Any mappable parameter within the DAW can be

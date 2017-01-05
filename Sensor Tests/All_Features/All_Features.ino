@@ -201,4 +201,3 @@ int y_smoothing(){
   
   return y_av;
 }
-

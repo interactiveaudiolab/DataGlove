@@ -1,4 +1,4 @@
-# Sound Gauntlet
+# Sourcery MIDI Glove
 
 ![Alt text]( https://cloud.githubusercontent.com/assets/17751787/21694473/24d0cdae-d34b-11e6-8099-01050c640021.JPG "Prototype")
 

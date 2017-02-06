@@ -17,8 +17,7 @@ ___
 The device consists of multiple sensors and fabric. To build your own, you will need the following physical components:
   - [**PunchThrough Bean+ Microcontroller**](http://store.punchthrough.com/collections/bean-family/products/lightblue-bean-plus) - This is the brain of the device. 
   All sensor data is read by this processor and communicated through Bluetooth to the DAW. It runs modified Arduino code and automatically 
-  sends out MIDI data ready for interpretation.
-  
+  sends out MIDI data ready for interpretation. 
   - **Accelerometer (Built-in)**
     The Bean+ uses a built-in accelerometer as one of the main device sensors. The accelerometer functions as an indicator of the 
     glove's position in space and sends x, y, and z dimensional values to be interpreted to parameters of the user's choosing.
@@ -30,3 +29,9 @@ The device consists of multiple sensors and fabric. To build your own, you will 
   program is ready for use, it can blink at a particular tempo, etc.
   - [**Conductive Thread**](https://www.sparkfun.com/products/10867) - Allows for a light-weight method to connect the circuit. 
   - [**Flexible Wires**](https://www.sparkfun.com/products/10649) - For more sophisticated connections.
+
+# Software
+The MIDI glove communicates through many software for feasible applications:
+ - [**Arduino**](https://www.arduino.cc/en/Main/Software) - The Bean+ microcontroller uses an Arduino chip as it's main CPU. Most of the code on this Github are Arduino scripts that tell the Bean directly what to do. Punchthrough's [**MIDI Library**](https://punchthrough.com/bean/reference#MIDI) is great for digital audio software communication.
+ - [**Max/MSP**](https://cycling74.com/products/max/) - Max is a visual programming language that I use for signal processing. It takes my raw glove data (especially the accelerometer values) and converts them to various outputs. Max's modular signal flow makes it a great way to process real-time values and communicate with digital audio software.
+ - [**Ableton Live**](https://www.ableton.com/en/live/) - I am mainly developing applications for Ableton Live to control parameters and sound characteristics. Ableton's completely mappable interface allows me to hook up the glove to anything inside of the software. More details on Live mapping can be found [**here**](https://www.ableton.com/answers/midi-keyboard-mapping).
